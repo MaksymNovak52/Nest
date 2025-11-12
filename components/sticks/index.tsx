@@ -15,7 +15,7 @@ function Stick({
   className = "",
   translate = "-translate-y-[120px]",
   variant = "left",
-  hoverClass = "group-hover:-translate-y-10",
+  hoverClass = "group-hover:-translate-y-10 group-focus:-translate-y-10",
 }: StickProps) {
   const isLeft = variant === "left";
   const isRightTop = variant === "rightTop";
@@ -35,7 +35,7 @@ function Stick({
             height="73"
             viewBox="0 0 143 73"
             fill="none"
-            className="block max-[500px]:hidden group-hover:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="block max-[500px]:hidden group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
           >
             <g opacity="0.4">
               <circle
@@ -55,7 +55,7 @@ function Stick({
             height="26"
             viewBox="0 0 63 26"
             fill="none"
-            className="hidden max-[500px]:block group-hover:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="hidden max-[500px]:block group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
           >
             <path d="M0 0.5H43.875L62 25.5" stroke="white" />
           </svg>
@@ -66,14 +66,13 @@ function Stick({
     if (variant === "rightTop") {
       return (
         <div>
-          {/* desktop */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="145"
             height="88"
             viewBox="0 0 145 88"
             fill="none"
-            className="block max-[500px]:hidden group-hover:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="block max-[500px]:hidden group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
           >
             <g opacity="0.4">
               <circle
@@ -93,7 +92,7 @@ function Stick({
             height="28"
             viewBox="0 0 61 28"
             fill="none"
-            className="hidden max-[500px]:block group-hover:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="hidden max-[500px]:block group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
           >
             <g opacity="0.4">
               <circle
@@ -118,7 +117,7 @@ function Stick({
           height="73"
           viewBox="0 0 143 73"
           fill="none"
-          className="block max-[500px]:hidden group-hover:-translate-y-2 transition-transform duration-300 ease-in-out"
+          className="block max-[500px]:hidden group-hover:-translate-y-2 group-focus:-translate-y-2 transition-transform duration-300 ease-in-out"
         >
           <g opacity="0.4">
             <circle
@@ -138,7 +137,7 @@ function Stick({
           height="20"
           viewBox="0 0 54 20"
           fill="none"
-          className="hidden max-[500px]:block group-hover:-translate-y-2 transition-transform duration-300 ease-in-out"
+          className="hidden max-[500px]:block group-hover:-translate-y-2 group-focus:-translate-y-2 transition-transform duration-300 ease-in-out"
         >
           <g opacity="0.4">
             <path d="M54.0007 19H14.0841L2.00074 2" stroke="white" />
@@ -158,6 +157,8 @@ function Stick({
   return (
     <div
       className={`absolute group flex ${direction} ${align} ${gap} ${className}`}
+      tabIndex={0}
+      role="button"
     >
       <div
         className={`
@@ -201,6 +202,7 @@ function Stick({
             transition-opacity
             duration-300
             group-hover:opacity-70
+            group-focus:opacity-70
           "
         >
           {description}
@@ -216,7 +218,7 @@ export function Sticks() {
   return (
     <>
       <Stick
-        hoverClass="group-hover:-translate-y-7"
+        hoverClass="group-hover:-translate-y-7 group-focus:-translate-y-7"
         label="Step 1"
         description="nest exchange fees fuel perpetual HYPE accumulation"
         className="lg:top-[234px] lg:left-[145px] left-[17px] top-[306px]"
@@ -225,7 +227,7 @@ export function Sticks() {
       />
 
       <Stick
-        hoverClass="group-hover:-translate-y-4"
+        hoverClass="group-hover:-translate-y-4 group-focus:-translate-y-4"
         label="Step 2"
         description="HYPE becomes MEGAHYPE, compounding exposure"
         className="lg:top-[130px] lg:right-[567px] top-[232px] right-[83px]"
@@ -234,7 +236,7 @@ export function Sticks() {
       />
 
       <Stick
-        hoverClass="group-hover:-translate-y-1"
+        hoverClass="group-hover:-translate-y-1 group-focus:-translate-y-1"
         label="Step 3"
         description="MEGAHYPE rewards flow back to voters, powering the flywheel"
         className="lg:bottom-[316px] lg:right-[140px] bottom-[414px] right-[36px]"
