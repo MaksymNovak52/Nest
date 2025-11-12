@@ -249,7 +249,7 @@ export function Sticks() {
         hoverClass="group-hover:-translate-y-1 group-focus:-translate-y-1"
         label="Step 3"
         description="MEGAHYPE rewards flow back to voters, powering the flywheel"
-        className="lg:bottom-[316px] lg:right-[140px] bottom-[430px] right-[85px]"
+        className="lg:bottom-[316px] lg:right-[140px] bottom-[350px] right-[120px]"
         translate="translate-y-1"
         variant="rightBottom"
       />
