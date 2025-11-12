@@ -197,11 +197,13 @@ function Stick({
             left-0
             top-full
             mt-[2px]
-            w-[180px]
+            w-[100px]
+            lg:w-[180px]
             text-white/80
             font-['Host_Grotesk']
             text-[12px]
             font-medium
+
             leading-[100%]
             tracking-[0.36px]
             uppercase
@@ -226,7 +228,7 @@ export function Sticks() {
   return (
     <>
       <Stick
-        hoverClass="group-hover:-translate-y-7 group-focus:-translate-y-7"
+        hoverClass="lg:group-hover:-translate-y-7 group-focus:-translate-y-14"
         label="Step 1"
         description="nest exchange fees fuel perpetual HYPE accumulation"
         className="lg:top-[234px] lg:left-[145px] left-[17px] top-[306px]"
@@ -235,7 +237,7 @@ export function Sticks() {
       />
 
       <Stick
-        hoverClass="group-hover:-translate-y-4 group-focus:-translate-y-4"
+        hoverClass="lg:group-hover:-translate-y-4 group-focus:-translate-y-10"
         label="Step 2"
         description="HYPE becomes MEGAHYPE, compounding exposure"
         className="lg:top-[130px] lg:right-[567px] top-[232px] right-[83px]"
@@ -247,7 +249,7 @@ export function Sticks() {
         hoverClass="group-hover:-translate-y-1 group-focus:-translate-y-1"
         label="Step 3"
         description="MEGAHYPE rewards flow back to voters, powering the flywheel"
-        className="lg:bottom-[316px] lg:right-[140px] bottom-[414px] right-[36px]"
+        className="lg:bottom-[316px] lg:right-[140px] bottom-[430px] right-[85px]"
         translate="translate-y-1"
         variant="rightBottom"
       />
