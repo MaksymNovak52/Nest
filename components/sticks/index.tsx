@@ -48,16 +48,24 @@ function Stick({
               <path d="M0 0.5L90.5262 0.5L139 68.5" stroke="white" />
             </g>
           </svg>
-
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="63"
-            height="26"
-            viewBox="0 0 63 26"
+            width="64"
+            height="28"
+            viewBox="0 0 64 28"
             fill="none"
             className="hidden max-[500px]:block group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
           >
-            <path d="M0 0.5H43.875L62 25.5" stroke="white" />
+            <g opacity="0.4">
+              <circle
+                cx="1.93103"
+                cy="1.93103"
+                r="1.93103"
+                transform="matrix(1 0 0 -1 60.1367 27.5)"
+                fill="white"
+              />
+              <path d="M0 0.5H43.875L62 25.5" stroke="white" />
+            </g>
           </svg>
         </div>
       );
