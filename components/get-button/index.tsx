@@ -6,6 +6,7 @@ export function GetButton() {
       hover:opacity-70
       transition-opacity
       active:opacity-50
+      z-10
       cursor-pointer
   text-[16px]
   font-semibold
@@ -13,7 +14,7 @@ export function GetButton() {
   tracking-[-0.48px]
  px-[16px] lg:px-6 bottom-[8px] right-1/2 max-lg:translate-x-1/2 lg:right-[10px] w-[360px] lg:w-[704px] h-[48px] flex flex-row justify-between items-center  bg-[#9CE0DA]"
     >
-      Get MEGAHYPE
+      Get megaHYPE
       <Image src="/icon/arrow-right.svg" alt="arrow" width={24} height={24} />
     </button>
   );

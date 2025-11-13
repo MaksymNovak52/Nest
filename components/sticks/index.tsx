@@ -15,7 +15,8 @@ function Stick({
   className = "",
   translate = "-translate-y-[120px]",
   variant = "left",
-  hoverClass = "group-hover:-translate-y-10 group-focus:-translate-y-10",
+  // desktop => hover, mobile => focus
+  hoverClass = "lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-10",
 }: StickProps) {
   const isLeft = variant === "left";
   const isRightTop = variant === "rightTop";
@@ -29,13 +30,14 @@ function Stick({
     if (variant === "left") {
       return (
         <div className="mt-2">
+          {/* DESKTOP LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="143"
             height="73"
             viewBox="0 0 143 73"
             fill="none"
-            className="block max-[500px]:hidden group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="block max-[500px]:hidden"
           >
             <g opacity="0.4">
               <circle
@@ -48,13 +50,14 @@ function Stick({
               <path d="M0 0.5L90.5262 0.5L139 68.5" stroke="white" />
             </g>
           </svg>
+          {/* MOBILE LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64"
             height="28"
             viewBox="0 0 64 28"
             fill="none"
-            className="hidden max-[500px]:block group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="hidden max-[500px]:block"
           >
             <g opacity="0.4">
               <circle
@@ -74,13 +77,14 @@ function Stick({
     if (variant === "rightTop") {
       return (
         <div>
+          {/* DESKTOP LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="145"
             height="88"
             viewBox="0 0 145 88"
             fill="none"
-            className="block max-[500px]:hidden group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="block max-[500px]:hidden"
           >
             <g opacity="0.4">
               <circle
@@ -94,13 +98,14 @@ function Stick({
             </g>
           </svg>
 
+          {/* MOBILE LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="61"
             height="28"
             viewBox="0 0 61 28"
             fill="none"
-            className="hidden max-[500px]:block group-hover:translate-y-2 group-focus:translate-y-2 transition-transform duration-300 ease-in-out"
+            className="hidden max-[500px]:block"
           >
             <g opacity="0.4">
               <circle
@@ -117,15 +122,17 @@ function Stick({
       );
     }
 
+    // rightBottom
     return (
       <div>
+        {/* DESKTOP LINE */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="143"
           height="73"
           viewBox="0 0 143 73"
           fill="none"
-          className="block max-[500px]:hidden group-hover:-translate-y-2 group-focus:-translate-y-2 transition-transform duration-300 ease-in-out"
+          className="block max-[500px]:hidden"
         >
           <g opacity="0.4">
             <circle
@@ -139,13 +146,14 @@ function Stick({
           </g>
         </svg>
 
+        {/* MOBILE LINE */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="54"
           height="20"
           viewBox="0 0 54 20"
           fill="none"
-          className="hidden max-[500px]:block group-hover:-translate-y-2 group-focus:-translate-y-2 transition-transform duration-300 ease-in-out"
+          className="hidden max-[500px]:block"
         >
           <g opacity="0.4">
             <path d="M54.0007 19H14.0841L2.00074 2" stroke="white" />
@@ -164,7 +172,7 @@ function Stick({
 
   return (
     <div
-      className={`absolute group flex ${direction} ${align} ${gap} ${className}`}
+      className={`absolute group z-10 flex ${direction} ${align} ${gap} ${className}`}
       tabIndex={0}
       role="button"
     >
@@ -203,7 +211,6 @@ function Stick({
             font-['Host_Grotesk']
             text-[12px]
             font-medium
-
             leading-[100%]
             tracking-[0.36px]
             uppercase
@@ -211,8 +218,8 @@ function Stick({
             pointer-events-none
             transition-opacity
             duration-300
-            group-hover:opacity-70
-            group-focus:opacity-70
+            lg:group-hover:opacity-70
+            max-lg:group-focus:opacity-70
           "
         >
           {description}
@@ -226,33 +233,31 @@ function Stick({
 
 export function Sticks() {
   return (
-    <>
+    <div>
       <Stick
-        hoverClass="lg:group-hover:-translate-y-7 group-focus:-translate-y-14"
+        hoverClass="lg:group-hover:-translate-y-8 max-lg:group-focus:-translate-y-14"
         label="Step 1"
-        description="nest exchange fees fuel perpetual HYPE accumulation"
-        className="lg:top-[234px] lg:left-[145px] left-[17px] top-[306px]"
+        description="nest exchange fees fuel perpetual HYPE accumulation."
+        className="min-[1900px]:top-[304px] lg:top-[132px] lg:left-[145px] left-[17px] top-[306px]"
         translate="-translate-y-10"
         variant="left"
       />
-
       <Stick
-        hoverClass="lg:group-hover:-translate-y-4 group-focus:-translate-y-10"
+        hoverClass="lg:group-hover:-translate-y-5 max-lg:group-focus:-translate-y-10"
         label="Step 2"
-        description="HYPE becomes MEGAHYPE, compounding exposure"
+        description="HYPE becomes MEGAHYPE, compounding exposure."
         className="lg:top-[130px] lg:right-[567px] top-[232px] right-[83px]"
         translate="-translate-y-10"
         variant="rightTop"
       />
-
       <Stick
-        hoverClass="group-hover:-translate-y-1 group-focus:-translate-y-1"
+        hoverClass="lg:group-hover:-translate-y-1 max-lg:group-focus:-translate-y-1"
         label="Step 3"
-        description="MEGAHYPE rewards flow back to voters, powering the flywheel"
+        description="MEGAHYPE rewards flow back to voters, powering the flywheel."
         className="lg:bottom-[316px] lg:right-[140px] bottom-[350px] right-[120px]"
         translate="translate-y-1"
         variant="rightBottom"
       />
-    </>
+    </div>
   );
 }

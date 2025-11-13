@@ -23,7 +23,7 @@ export default function RootLayout({
         `}
       >
         <main
-          className="          h-screen
+          className="   relative       h-screen
          lg:bg-[url('/bg.png')]
            bg-[url('/bg-mobile.png')]
           bg-no-repeat

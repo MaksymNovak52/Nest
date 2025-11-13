@@ -3,19 +3,25 @@ import Image from "next/image";
 
 export function HeroHeader() {
   return (
-    <header className="w-full flex  lg:flex-row flex-row-reverse justify-between items-center mt-[24px]">
-      <div className="flex flex-row gap-[24px] text-white font-semibold tracking-[-0.42px] text-[14px]">
+    <header className="w-full flex  lg:flex-row flex-row-reverse justify-between items-center mt-[24px] z-10">
+      <div className="flex flex-row gap-[24px] text-white font-semibold tracking-[-0.42px] text-[14px] z-10">
         {["About us", "Docs"].map((item) => (
           <p
             key={item}
-            className="hover:opacity-70 active:opacity-50 transition-colors cursor-pointer"
+            className="hover:opacity-70 active:opacity-50 transition-colors cursor-pointer z-10"
           >
             {item}
           </p>
         ))}
       </div>
-      <Image src="/icon/logo.svg" alt="logo" width={142.637} height={32} />
-      <div className="flex flex-col-reverse lg:flex-row gap-2 items-center max-lg:absolute bottom-[280px] ">
+      <Image
+        src="/icon/logo.svg"
+        alt="logo"
+        width={142.637}
+        height={32}
+        className="z-10"
+      />
+      <div className="flex flex-col-reverse lg:flex-row gap-2 items-center max-lg:absolute bottom-[280px] z-10">
         <span className="border active:bg-transparent active:border-[#15231F] hover:bg-[#151B19] hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +41,7 @@ export function HeroHeader() {
         </span>
       </div>
 
-      <div className="flex flex-col items-start gap-3  absolute lg:hidden top-[88px] left-[20px] ">
+      <div className="flex flex-col items-start gap-3  absolute lg:hidden top-[88px] left-[20px] z-10">
         {ENGINE_HYPE_STATS.map((item) => (
           <div className="flex flex-row items-center gap-2" key={item.title}>
             <span className="font-medium text-[12px] text-[#CCCDCD]">
