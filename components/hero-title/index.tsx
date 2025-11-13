@@ -40,6 +40,7 @@ export function HeroTitle() {
         -translate-x-1/2
         inline-block
         lg:hidden
+        z-10
         "
       >
         Amplify

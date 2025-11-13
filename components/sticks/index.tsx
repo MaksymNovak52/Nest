@@ -284,6 +284,11 @@ export function Sticks() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    const tryPlay = () => {
+      video.play().catch(() => {});
+    };
+
+    tryPlay();
 
     const updateVideoRect = () => {
       if (!video.videoWidth || !video.videoHeight) return;
