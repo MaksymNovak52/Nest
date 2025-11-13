@@ -393,6 +393,7 @@ export function Sticks() {
               videoX={step1X}
               videoY={step1Y}
               variant="left"
+              hover="lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-16"
             />
             <Stick
               label="Step 2"
