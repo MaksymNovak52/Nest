@@ -1,24 +1,25 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+
 type StickVariant = "left" | "rightTop" | "rightBottom";
 
 type StickProps = {
   label: string;
   description: string;
-  className?: string;
-  translate?: string;
+  videoX: number;
+  videoY: number;
   variant?: StickVariant;
-  hoverClass?: string;
+  hover?: string;
 };
 
 function Stick({
   label,
   description,
-  className = "",
-  translate = "-translate-y-[120px]",
   variant = "left",
-  // desktop => hover, mobile => focus
-  hoverClass = "lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-10",
+  videoX,
+  hover = "lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-10",
+  videoY,
 }: StickProps) {
-  const isLeft = variant === "left";
   const isRightTop = variant === "rightTop";
   const isRightBottom = variant === "rightBottom";
 
@@ -30,7 +31,6 @@ function Stick({
     if (variant === "left") {
       return (
         <div className="mt-2">
-          {/* DESKTOP LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="143"
@@ -50,7 +50,6 @@ function Stick({
               <path d="M0 0.5L90.5262 0.5L139 68.5" stroke="white" />
             </g>
           </svg>
-          {/* MOBILE LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64"
@@ -77,7 +76,6 @@ function Stick({
     if (variant === "rightTop") {
       return (
         <div>
-          {/* DESKTOP LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="145"
@@ -97,8 +95,6 @@ function Stick({
               <path d="M145 0.5L63.4331 0.5L4 83.5" stroke="white" />
             </g>
           </svg>
-
-          {/* MOBILE LINE */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="61"
@@ -122,10 +118,8 @@ function Stick({
       );
     }
 
-    // rightBottom
     return (
       <div>
-        {/* DESKTOP LINE */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="143"
@@ -145,8 +139,6 @@ function Stick({
             <path d="M143 72L52.4738 72L4 4" stroke="white" />
           </g>
         </svg>
-
-        {/* MOBILE LINE */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="54"
@@ -172,92 +164,250 @@ function Stick({
 
   return (
     <div
-      className={`absolute group z-10 flex ${direction} ${align} ${gap} ${className}`}
+      className={`absolute group z-10 flex ${direction} ${align} ${gap}`}
+      style={{
+        left: `${videoX}%`,
+        top: `${videoY}%`,
+        transform: "translate(-50%, -50%)",
+      }}
       tabIndex={0}
       role="button"
     >
       <div
-        className={`
-          relative
-          inline-block
-          transition-transform
-          duration-300
-          ${hoverClass}
-        `}
+        className={`relative inline-block transition-transform duration-300 ${hover}`}
       >
-        <h4
-          className="
-            text-white
-            font-['Host_Grotesk']
-            text-[12px]
-            font-medium
-            leading-[100%]
-            tracking-[0.36px]
-            uppercase
-          "
-        >
+        <h4 className="text-white font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase">
           {label}
         </h4>
-
-        <p
-          className="
-            absolute
-            left-0
-            top-full
-            mt-[2px]
-            w-[100px]
-            lg:w-[180px]
-            text-white/80
-            font-['Host_Grotesk']
-            text-[12px]
-            font-medium
-            leading-[100%]
-            tracking-[0.36px]
-            uppercase
-            opacity-0
-            pointer-events-none
-            transition-opacity
-            duration-300
-            lg:group-hover:opacity-70
-            max-lg:group-focus:opacity-70
-          "
-        >
+        <p className="absolute left-0 top-full mt-[2px] w-[100px] lg:w-[180px] text-white/80 font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase opacity-0 pointer-events-none transition-opacity duration-300 lg:group-hover:opacity-70 max-lg:group-focus:opacity-70">
           {description}
         </p>
       </div>
-
       {renderSvg()}
     </div>
   );
 }
 
+type Rect = { width: number; height: number; left: number; top: number };
+
+type ResponsiveConfig = {
+  minWidth: number;
+  maxWidth: number;
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  invertX?: boolean;
+  invertY?: boolean;
+};
+
+const STICK_RESPONSIVE_CONFIG: Record<
+  "step1" | "step2" | "step3",
+  ResponsiveConfig
+> = {
+  step1: {
+    minWidth: 900,
+    maxWidth: 1920,
+    minX: 12,
+    maxX: 40,
+    minY: 38.6,
+    maxY: 36,
+    invertY: true,
+  },
+  step2: {
+    minWidth: 900,
+    maxWidth: 1920,
+    minX: 56,
+    maxX: 64,
+    minY: 22,
+    maxY: 38,
+    invertX: true,
+    invertY: true,
+  },
+  step3: {
+    minWidth: 900,
+    maxWidth: 1920,
+    minX: 60,
+    maxX: 94,
+    minY: 50.2,
+    maxY: 52,
+    invertX: true,
+    invertY: true,
+  },
+};
+
+function getResponsiveValue(
+  windowWidth: number,
+  config: ResponsiveConfig,
+  axis: "x" | "y"
+): number {
+  const { minWidth, maxWidth, minX, maxX, minY, maxY, invertX, invertY } =
+    config;
+
+  if (!windowWidth) {
+    if (axis === "x") return invertX ? minX : maxX;
+    return invertY ? minY : maxY;
+  }
+
+  const isX = axis === "x";
+  const min = isX ? minX : minY;
+  const max = isX ? maxX : maxY;
+  const invert = isX ? invertX : invertY;
+
+  if (windowWidth <= minWidth) {
+    return invert ? min : max;
+  }
+
+  if (windowWidth >= maxWidth) {
+    return invert ? max : min;
+  }
+
+  const t = (windowWidth - minWidth) / (maxWidth - minWidth);
+
+  if (invert) {
+    return min + (max - min) * t;
+  }
+
+  return max + (min - max) * t;
+}
+
 export function Sticks() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoRect, setVideoRect] = useState<Rect>({
+    width: 0,
+    height: 0,
+    left: 0,
+    top: 0,
+  });
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateVideoRect = () => {
+      if (!video.videoWidth || !video.videoHeight) return;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      setWindowWidth(vw);
+
+      const videoAspect = video.videoWidth / video.videoHeight;
+      const viewportAspect = vw / vh;
+
+      let width: number;
+      let height: number;
+      let left: number;
+      let top: number;
+
+      if (viewportAspect > videoAspect) {
+        width = vw;
+        height = vw / videoAspect;
+        left = 0;
+        top = (vh - height) / 2;
+      } else {
+        height = vh;
+        width = vh * videoAspect;
+        top = 0;
+        left = (vw - width) / 2;
+      }
+
+      setVideoRect({ width, height, left, top });
+    };
+
+    video.addEventListener("loadedmetadata", updateVideoRect);
+    window.addEventListener("resize", updateVideoRect);
+    updateVideoRect();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", updateVideoRect);
+      window.removeEventListener("resize", updateVideoRect);
+    };
+  }, []);
+
+  const step1X = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step1,
+    "x"
+  );
+  const step1Y = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step1,
+    "y"
+  );
+
+  const step2X = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step2,
+    "x"
+  );
+  const step2Y = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step2,
+    "y"
+  );
+
+  const step3X = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step3,
+    "x"
+  );
+  const step3Y = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step3,
+    "y"
+  );
+
   return (
-    <div>
-      <Stick
-        hoverClass="lg:group-hover:-translate-y-8 max-lg:group-focus:-translate-y-14"
-        label="Step 1"
-        description="nest exchange fees fuel perpetual HYPE accumulation."
-        className="min-[1900px]:top-[304px] lg:top-[132px] lg:left-[145px] left-[17px] top-[306px]"
-        translate="-translate-y-10"
-        variant="left"
-      />
-      <Stick
-        hoverClass="lg:group-hover:-translate-y-5 max-lg:group-focus:-translate-y-10"
-        label="Step 2"
-        description="HYPE becomes MEGAHYPE, compounding exposure."
-        className="lg:top-[130px] lg:right-[567px] top-[232px] right-[83px]"
-        translate="-translate-y-10"
-        variant="rightTop"
-      />
-      <Stick
-        hoverClass="lg:group-hover:-translate-y-1 max-lg:group-focus:-translate-y-1"
-        label="Step 3"
-        description="MEGAHYPE rewards flow back to voters, powering the flywheel."
-        className="lg:bottom-[316px] lg:right-[140px] bottom-[350px] right-[120px]"
-        translate="translate-y-1"
-        variant="rightBottom"
-      />
+    <div className="w-full h-screen bg-black relative overflow-hidden">
+      <video
+        ref={videoRef}
+        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/bg-vid.mp4" type="video/mp4" />
+      </video>
+
+      {videoRect.width > 0 && (
+        <div
+          className="fixed"
+          style={{
+            left: `${videoRect.left}px`,
+            top: `${videoRect.top}px`,
+            width: `${videoRect.width}px`,
+            height: `${videoRect.height}px`,
+          }}
+        >
+          <div className="relative w-full h-full">
+            <Stick
+              label="Step 1"
+              description="nest exchange fees fuel perpetual HYPE accumulation."
+              videoX={step1X}
+              videoY={step1Y}
+              variant="left"
+            />
+            <Stick
+              label="Step 2"
+              description="HYPE becomes MEGAHYPE, compounding exposure."
+              videoX={step2X}
+              videoY={step2Y}
+              variant="rightTop"
+              hover="lg:group-hover:-translate-y-6 max-lg:group-focus:-translate-y-12"
+            />
+            <Stick
+              label="Step 3"
+              description="MEGAHYPE rewards flow back to voters, powering the flywheel."
+              videoX={step3X}
+              videoY={step3Y}
+              variant="rightBottom"
+              hover="lg:group-hover:translate-y-1 max-lg:group-focus:translate-y-1"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,8 +22,8 @@ export function HeroTitle() {
       >
         Amplify HYPE's upside
       </h1>
-      <div className="absolute bottom-[228px]  lg:block hidden w-full bg-[#2A3531] h-[1px] left-1"></div>
-      <span className="absolute bottom-[262px]  block lg:hidden w-full bg-[#2A3531] h-[1px] left-1 "></span>
+      <div className="absolute bottom-[228px]  lg:block hidden w-full bg-[#2A3531] h-[1px] left-1 z-9"></div>
+      <span className="absolute bottom-[262px]  block lg:hidden w-full bg-[#2A3531] h-[1px] left-1 z-10 "></span>
       <h1
         className="
         text-white 
