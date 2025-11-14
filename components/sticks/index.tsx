@@ -227,7 +227,7 @@ const STICK_RESPONSIVE_CONFIG: Record<
   step3: {
     minWidth: 900,
     maxWidth: 1920,
-    minX: 60,
+    minX: 57,
     maxX: 80,
     minY: 48.2,
     maxY: 52,
