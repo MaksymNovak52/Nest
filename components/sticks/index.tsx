@@ -206,12 +206,12 @@ const STICK_RESPONSIVE_CONFIG: Record<
   ResponsiveConfig
 > = {
   step1: {
-    minWidth: 900,
+    minWidth: 800,
     maxWidth: 1920,
-    minX: 12,
-    maxX: 40,
-    minY: 38.6,
-    maxY: 36,
+    minX: 20,
+    maxX: 10,
+    minY: 14.5,
+    maxY: 12,
     invertY: true,
   },
   step2: {
@@ -228,8 +228,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     minWidth: 900,
     maxWidth: 1920,
     minX: 60,
-    maxX: 94,
-    minY: 50.2,
+    maxX: 80,
+    minY: 48.2,
     maxY: 52,
     invertX: true,
     invertY: true,
@@ -330,16 +330,18 @@ export function Sticks() {
     };
   }, []);
 
-  const step1X = getResponsiveValue(
+  const step1OffsetX = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step1,
     "x"
   );
-  const step1Y = getResponsiveValue(
+  const step1OffsetY = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step1,
     "y"
   );
+  const step1X = 50 - step1OffsetX;
+  const step1Y = 50 - step1OffsetY;
 
   const step2X = getResponsiveValue(
     windowWidth,
