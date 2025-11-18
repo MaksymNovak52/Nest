@@ -24,7 +24,7 @@ function Stick({
   const isRightBottom = variant === "rightBottom";
 
   const direction = isRightBottom ? "flex-col-reverse" : "flex-col";
-  const align = isRightTop || isRightBottom ? "items-end" : "items-start";
+  const align = isRightTop || isRightBottom ? "items-start " : "items-start";
   const gap = isRightTop || isRightBottom ? "gap-2" : "";
 
   const renderSvg = () => {
@@ -33,9 +33,9 @@ function Stick({
         <div className="mt-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="143"
+            width="191"
             height="73"
-            viewBox="0 0 143 73"
+            viewBox="0 0 191 73"
             fill="none"
             className="block max-[500px]:hidden"
           >
@@ -44,12 +44,13 @@ function Stick({
                 cx="4"
                 cy="4"
                 r="4"
-                transform="matrix(1 0 0 -1 135 72.5)"
+                transform="matrix(1 0 0 -1 183 72.5)"
                 fill="white"
               />
-              <path d="M0 0.5L90.5262 0.5L139 68.5" stroke="white" />
+              <path d="M0 0.5L138.526 0.5L187 68.5" stroke="white" />
             </g>
           </svg>
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64"
@@ -78,9 +79,9 @@ function Stick({
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="145"
+            width="225"
             height="88"
-            viewBox="0 0 145 88"
+            viewBox="0 0 225 88"
             fill="none"
             className="block max-[500px]:hidden"
           >
@@ -92,9 +93,10 @@ function Stick({
                 transform="rotate(180 4 83.5)"
                 fill="white"
               />
-              <path d="M145 0.5L63.4331 0.5L4 83.5" stroke="white" />
+              <path d="M225 0.5L63.4331 0.5L4 83.5" stroke="white" />
             </g>
           </svg>
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="61"
@@ -122,11 +124,11 @@ function Stick({
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="143"
+          width="217"
           height="73"
-          viewBox="0 0 143 73"
-          fill="none"
           className="block max-[500px]:hidden"
+          viewBox="0 0 217 73"
+          fill="none"
         >
           <g opacity="0.4">
             <circle
@@ -136,7 +138,7 @@ function Stick({
               transform="matrix(-1 0 0 1 8 0)"
               fill="white"
             />
-            <path d="M143 72L52.4738 72L4 4" stroke="white" />
+            <path d="M216.5 72H52.4738L4 4" stroke="white" />
           </g>
         </svg>
         <svg
@@ -164,7 +166,7 @@ function Stick({
 
   return (
     <div
-      className={`absolute group z-10 flex ${direction} ${align} ${gap}`}
+      className={`absolute group  z-10 flex ${direction} ${align} ${gap}`}
       style={{
         left: `${videoX}%`,
         top: `${videoY}%`,
@@ -174,7 +176,9 @@ function Stick({
       role="button"
     >
       <div
-        className={`relative inline-block transition-transform duration-300 ${hover}`}
+        className={`relative inline-block transition-transform duration-300 ${
+          variant !== "left" && " ml-7 lg:ml-16"
+        }  ${hover}`}
       >
         <h4 className="text-white font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase">
           {label}
@@ -218,8 +222,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     minWidth: 700,
     maxWidth: 1920,
     minX: 56,
-    maxX: 58,
-    minY: 23,
+    maxX: 68,
+    minY: 28,
     maxY: 20,
     invertX: true,
     invertY: true,

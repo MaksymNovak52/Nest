@@ -10,18 +10,18 @@ export function HeroFooter() {
         </span>
         <span className=" ">compounding $HYPE into $MEGAHYPE</span>
       </div>
-      <div className="w-[180px] lg:flex flex-col gap-[51px] hidden ">
-        <span className="font-medium text-[14px] text-[#6F7371] ">
+      <div className=" lg:flex flex-col gap-[21px] hidden ">
+        <span className="font-medium text-[12px] text-[#6F7371] uppercase">
           <span className="text-[#FFFFFF]">Amplify your conviction</span> with
           HYPE’s strongest growth asset
         </span>
-        <div className="flex flex-col items-start gap-3 ">
+        <div className="flex flex-col items-start gap-2 ">
           {ENGINE_HYPE_STATS.map((item) => (
             <div className="flex flex-row items-center gap-2" key={item.title}>
-              <span className="font-medium text-[14px] text-[#CCCDCD]">
+              <span className="font-bold text-[12px] text-[#CCCDCD]">
                 {item.price}
               </span>
-              <span className="font-normal text-[14px] text-[#808181] whitespace-nowrap">
+              <span className="font-normal text-[12px] text-[#808181] whitespace-nowrap">
                 {item.title}
               </span>
             </div>

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function HeroHeader() {
   return (
-    <header className="w-full flex  lg:flex-row flex-row-reverse justify-between items-center mt-[24px] z-10">
+    <header className="w-full flex  lg:flex-row lg:items-end  z-10 flex-row-reverse justify-between items-center mt-[24px] z-10">
       <div className="flex flex-row gap-[24px] text-white font-semibold tracking-[-0.42px] text-[14px] z-10">
         {["About us", "Docs"].map((item) => (
           <p
@@ -21,8 +21,8 @@ export function HeroHeader() {
         height={32}
         className="z-10"
       />
-      <div className="flex flex-col-reverse lg:flex-row gap-2 items-center max-lg:absolute bottom-[280px] z-10">
-        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-[#151B19] hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
+      <div className="flex flex-col-reverse lg:flex-row gap-2  items-center max-lg:absolute bottom-[280px] z-10">
+        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10  hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="19"
@@ -36,7 +36,7 @@ export function HeroHeader() {
             />
           </svg>
         </span>
-        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-[#151B19] hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
+        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
           <Image src="/icon/x.svg" alt="discord" width={18} height={18} />
         </span>
       </div>
