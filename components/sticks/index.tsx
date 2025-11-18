@@ -208,18 +208,18 @@ const STICK_RESPONSIVE_CONFIG: Record<
   step1: {
     minWidth: 800,
     maxWidth: 1920,
-    minX: 43,
+    minX: 25,
     maxX: 10,
     minY: 14.5,
     maxY: 12,
     invertY: true,
   },
   step2: {
-    minWidth: 900,
+    minWidth: 700,
     maxWidth: 1920,
     minX: 56,
     maxX: 58,
-    minY: 22,
+    minY: 23,
     maxY: 20,
     invertX: true,
     invertY: true,
@@ -270,9 +270,10 @@ function getResponsiveValue(
 
   return max + (min - max) * t;
 }
-
 export function Sticks() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const appearVideoRef = useRef<HTMLVideoElement>(null);
+  const loopVideoRef = useRef<HTMLVideoElement>(null);
+
   const [videoRect, setVideoRect] = useState<Rect>({
     width: 0,
     height: 0,
@@ -280,15 +281,15 @@ export function Sticks() {
     top: 0,
   });
   const [windowWidth, setWindowWidth] = useState(0);
+  const [showLoop, setShowLoop] = useState(false);
 
   useEffect(() => {
-    const video = videoRef.current;
+    const video = appearVideoRef.current;
     if (!video) return;
+
     const tryPlay = () => {
       video.play().catch(() => {});
     };
-
-    tryPlay();
 
     const updateVideoRect = () => {
       if (!video.videoWidth || !video.videoHeight) return;
@@ -320,6 +321,8 @@ export function Sticks() {
       setVideoRect({ width, height, left, top });
     };
 
+    tryPlay();
+
     video.addEventListener("loadedmetadata", updateVideoRect);
     window.addEventListener("resize", updateVideoRect);
     updateVideoRect();
@@ -327,6 +330,32 @@ export function Sticks() {
     return () => {
       video.removeEventListener("loadedmetadata", updateVideoRect);
       window.removeEventListener("resize", updateVideoRect);
+    };
+  }, []);
+
+  useEffect(() => {
+    const appearVideo = appearVideoRef.current;
+    const loopVideo = loopVideoRef.current;
+    if (!appearVideo || !loopVideo) return;
+
+    let switched = false;
+
+    const onTimeUpdate = () => {
+      if (switched) return;
+      if (appearVideo.currentTime >= 2.1) {
+        switched = true;
+        loopVideo.currentTime = 0;
+        loopVideo.play().catch(() => {});
+
+        setShowLoop(true);
+        appearVideo.pause();
+      }
+    };
+
+    appearVideo.addEventListener("timeupdate", onTimeUpdate);
+
+    return () => {
+      appearVideo.removeEventListener("timeupdate", onTimeUpdate);
     };
   }, []);
 
@@ -367,15 +396,31 @@ export function Sticks() {
 
   return (
     <div className="w-full h-screen bg-black relative overflow-hidden">
+      {/* Перше відео (appear) */}
       <video
-        ref={videoRef}
-        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
+        ref={appearVideoRef}
+        className={`pointer-events-none fixed inset-0 w-full h-full object-cover ${
+          showLoop ? "opacity-0" : "opacity-100"
+        }`}
         autoPlay
-        loop
         muted
         playsInline
       >
-        <source src="/bg-vid.mp4" type="video/mp4" />
+        <source src="/video/appear.mp4" type="video/mp4" />
+      </video>
+
+      {/* Друге відео (loop), preload, поверх першого */}
+      <video
+        ref={loopVideoRef}
+        className={`pointer-events-none fixed inset-0 w-full h-full object-cover ${
+          showLoop ? "opacity-100" : "opacity-0"
+        }`}
+        loop
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="/video/loop.mp4" type="video/mp4" />
       </video>
 
       {videoRect.width > 0 && (
