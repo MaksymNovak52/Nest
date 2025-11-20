@@ -243,7 +243,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     maxY: 22,
     invertX: true,
     invertY: true,
-    xB: 60,
+    xB: 59,
+    yB: 25,
   },
   step3: {
     minWidth: 900,
@@ -277,7 +278,7 @@ function getResponsiveValue(
     yB,
   } = config;
 
-  if (windowWidth === 2560 && xB) {
+  if (windowWidth >= 2060 && xB) {
     if (axis === "x") {
       return xB;
     }
@@ -434,7 +435,7 @@ export function Sticks() {
           <div className="relative w-full h-full">
             <Stick
               label="Step 1"
-              description="nest exchange fees fuel perpetual HYPE accumulation."
+              description="nest exchange fees fuel perpetual HYPE accumulation"
               videoX={step1X}
               videoY={step1Y}
               variant="left"
@@ -443,7 +444,7 @@ export function Sticks() {
             />
             <Stick
               label="Step 2"
-              description="HYPE becomes MEGAHYPE, compounding exposure."
+              description="HYPE becomes MEGAHYPE, compounding exposure"
               videoX={step2X}
               videoY={step2Y}
               variant="rightTop"
@@ -452,7 +453,7 @@ export function Sticks() {
             />
             <Stick
               label="Step 3"
-              description="MEGAHYPE rewards flow back to voters, powering the flywheel."
+              description="MEGAHYPE rewards flow back to voters, powering the flywheel"
               videoX={step3X}
               videoY={step3Y}
               variant="rightBottom"
