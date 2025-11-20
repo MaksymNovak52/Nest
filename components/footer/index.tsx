@@ -18,10 +18,10 @@ export function HeroFooter() {
         <div className="flex flex-col items-start gap-2 ">
           {ENGINE_HYPE_STATS.map((item) => (
             <div className="flex flex-row items-center gap-2" key={item.title}>
-              <span className="font-bold text-[12px] text-[#CCCDCD]">
+              <span className="font-bold text-[14px] text-[#CCCDCD]">
                 {item.price}
               </span>
-              <span className="font-normal text-[12px] text-[#808181] whitespace-nowrap">
+              <span className="font-normal text-[14px] text-[#808181] whitespace-nowrap">
                 {item.title}
               </span>
             </div>

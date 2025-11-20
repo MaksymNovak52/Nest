@@ -10,6 +10,7 @@ type StickProps = {
   videoY: number;
   variant?: StickVariant;
   hover?: string;
+  delay?: number;
 };
 
 function Stick({
@@ -19,6 +20,7 @@ function Stick({
   videoX,
   hover = "lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-10",
   videoY,
+  delay,
 }: StickProps) {
   const isRightTop = variant === "rightTop";
   const isRightBottom = variant === "rightBottom";
@@ -26,6 +28,14 @@ function Stick({
   const direction = isRightBottom ? "flex-col-reverse" : "flex-col";
   const align = isRightTop || isRightBottom ? "items-start " : "items-start";
   const gap = isRightTop || isRightBottom ? "gap-2" : "";
+  const [isHovered, setIsHovered] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsHovered(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
 
   const renderSvg = () => {
     if (variant === "left") {
@@ -166,7 +176,9 @@ function Stick({
 
   return (
     <div
-      className={`absolute group  z-10 flex ${direction} ${align} ${gap}`}
+      className={`absolute group transition-opacity duration-300 ${
+        isHovered ? "opacity-100" : "opacity-0"
+      } z-10 flex ${direction} ${align} ${gap}`}
       style={{
         left: `${videoX}%`,
         top: `${videoY}%`,
@@ -202,6 +214,8 @@ type ResponsiveConfig = {
   minY: number;
   maxY: number;
   invertX?: boolean;
+  xB?: number;
+  yB?: number;
   invertY?: boolean;
 };
 
@@ -217,16 +231,19 @@ const STICK_RESPONSIVE_CONFIG: Record<
     minY: 14.5,
     maxY: 12,
     invertY: true,
+    xB: 16,
+    yB: 9.5,
   },
   step2: {
-    minWidth: 700,
-    maxWidth: 1920,
+    minWidth: 600,
+    maxWidth: 2000,
     minX: 56,
-    maxX: 68,
+    maxX: 65.5,
     minY: 28,
-    maxY: 20,
+    maxY: 22,
     invertX: true,
     invertY: true,
+    xB: 60,
   },
   step3: {
     minWidth: 900,
@@ -237,6 +254,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     maxY: 52,
     invertX: true,
     invertY: true,
+    xB: 70,
+    yB: 52,
   },
 };
 
@@ -245,8 +264,25 @@ function getResponsiveValue(
   config: ResponsiveConfig,
   axis: "x" | "y"
 ): number {
-  const { minWidth, maxWidth, minX, maxX, minY, maxY, invertX, invertY } =
-    config;
+  const {
+    minWidth,
+    maxWidth,
+    minX,
+    maxX,
+    minY,
+    maxY,
+    invertX,
+    invertY,
+    xB,
+    yB,
+  } = config;
+
+  if (windowWidth === 2560 && xB) {
+    if (axis === "x") {
+      return xB;
+    }
+    return yB ? yB : maxY;
+  }
 
   if (!windowWidth) {
     if (axis === "x") return invertX ? minX : maxX;
@@ -274,6 +310,7 @@ function getResponsiveValue(
 
   return max + (min - max) * t;
 }
+
 export function Sticks() {
   const appearVideoRef = useRef<HTMLVideoElement>(null);
   const loopVideoRef = useRef<HTMLVideoElement>(null);
@@ -337,32 +374,6 @@ export function Sticks() {
     };
   }, []);
 
-  useEffect(() => {
-    const appearVideo = appearVideoRef.current;
-    const loopVideo = loopVideoRef.current;
-    if (!appearVideo || !loopVideo) return;
-
-    let switched = false;
-
-    const onTimeUpdate = () => {
-      if (switched) return;
-      if (appearVideo.currentTime >= 2.1) {
-        switched = true;
-        loopVideo.currentTime = 0;
-        loopVideo.play().catch(() => {});
-
-        setShowLoop(true);
-        appearVideo.pause();
-      }
-    };
-
-    appearVideo.addEventListener("timeupdate", onTimeUpdate);
-
-    return () => {
-      appearVideo.removeEventListener("timeupdate", onTimeUpdate);
-    };
-  }, []);
-
   const step1OffsetX = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step1,
@@ -400,31 +411,14 @@ export function Sticks() {
 
   return (
     <div className="w-full h-screen bg-black relative overflow-hidden">
-      {/* Перше відео (appear) */}
       <video
         ref={appearVideoRef}
-        className={`pointer-events-none fixed inset-0 w-full h-full object-cover ${
-          showLoop ? "opacity-0" : "opacity-100"
-        }`}
+        className={`pointer-events-none fixed inset-0 w-full h-full object-cover `}
         autoPlay
         muted
         playsInline
       >
-        <source src="/video/appear.mp4" type="video/mp4" />
-      </video>
-
-      {/* Друге відео (loop), preload, поверх першого */}
-      <video
-        ref={loopVideoRef}
-        className={`pointer-events-none fixed inset-0 w-full h-full object-cover ${
-          showLoop ? "opacity-100" : "opacity-0"
-        }`}
-        loop
-        muted
-        playsInline
-        preload="auto"
-      >
-        <source src="/video/loop.mp4" type="video/mp4" />
+        <source src="/video/mainBg.webm" type="video/mp4" />
       </video>
 
       {videoRect.width > 0 && (
@@ -445,6 +439,7 @@ export function Sticks() {
               videoY={step1Y}
               variant="left"
               hover="lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-16"
+              delay={500}
             />
             <Stick
               label="Step 2"
@@ -453,6 +448,7 @@ export function Sticks() {
               videoY={step2Y}
               variant="rightTop"
               hover="lg:group-hover:-translate-y-6 max-lg:group-focus:-translate-y-12"
+              delay={750}
             />
             <Stick
               label="Step 3"
@@ -461,6 +457,7 @@ export function Sticks() {
               videoY={step3Y}
               variant="rightBottom"
               hover="lg:group-hover:translate-y-1 max-lg:group-focus:translate-y-1"
+              delay={1000}
             />
           </div>
         </div>
