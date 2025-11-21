@@ -402,17 +402,15 @@ export function Sticks() {
 
     prepareLoop();
 
-    // Спроба автозапуску
+    // Спроба автозапуску для всіх пристроїв
     appear.addEventListener("loadedmetadata", startVideo);
     appear.addEventListener("ended", handleAppearEnded);
 
-    // Спроба запуску при будь-якій взаємодії користувача
+    // Додатковий запуск при взаємодії користувача (на випадок якщо браузер заблокував автозапуск)
     const handleUserInteraction = () => {
       if (appear.paused && appear.style.display !== "none") {
         appear.play().catch(() => {});
       }
-      document.removeEventListener("touchstart", handleUserInteraction);
-      document.removeEventListener("click", handleUserInteraction);
     };
 
     document.addEventListener("touchstart", handleUserInteraction, {
