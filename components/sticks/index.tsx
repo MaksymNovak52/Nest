@@ -29,6 +29,7 @@ function Stick({
   const align = isRightTop || isRightBottom ? "items-start " : "items-start";
   const gap = isRightTop || isRightBottom ? "gap-2" : "";
   const [isHovered, setIsHovered] = useState(false);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsHovered(true);
@@ -176,9 +177,9 @@ function Stick({
 
   return (
     <div
-      className={`absolute group transition-opacity duration-300 ${
+      className={`absolute group transition-opacity duration-300  ${
         isHovered ? "opacity-100" : "opacity-0"
-      } z-10 flex ${direction} ${align} ${gap}`}
+      } z-20 flex ${direction} ${align} ${gap}`}
       style={{
         left: `${videoX}%`,
         top: `${videoY}%`,
@@ -216,6 +217,8 @@ type ResponsiveConfig = {
   invertX?: boolean;
   xB?: number;
   yB?: number;
+  xM?: number;
+  yM?: number;
   invertY?: boolean;
 };
 
@@ -227,12 +230,14 @@ const STICK_RESPONSIVE_CONFIG: Record<
     minWidth: 800,
     maxWidth: 1920,
     minX: 25,
-    maxX: 10,
-    minY: 14.5,
+    maxX: 36,
+    minY: 16,
     maxY: 12,
     invertY: true,
     xB: 16,
     yB: 9.5,
+    xM: 34,
+    yM: 6,
   },
   step2: {
     minWidth: 600,
@@ -245,6 +250,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     invertY: true,
     xB: 59,
     yB: 25,
+    xM: 65,
+    yM: 34,
   },
   step3: {
     minWidth: 900,
@@ -257,6 +264,8 @@ const STICK_RESPONSIVE_CONFIG: Record<
     invertY: true,
     xB: 70,
     yB: 52,
+    xM: 80,
+    yM: 50,
   },
 };
 
@@ -276,8 +285,16 @@ function getResponsiveValue(
     invertY,
     xB,
     yB,
+    xM,
+    yM,
   } = config;
 
+  if (windowWidth <= 500 && xM) {
+    if (axis === "x") {
+      return xM;
+    }
+    return yM ? yM : maxY;
+  }
   if (windowWidth >= 2060 && xB) {
     if (axis === "x") {
       return xB;
@@ -324,57 +341,85 @@ export function Sticks() {
   });
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLoop, setShowLoop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const video = appearVideoRef.current;
-    if (!video) return;
-
-    const tryPlay = () => {
-      video.play().catch(() => {});
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
     };
 
-    const updateVideoRect = () => {
-      if (!video.videoWidth || !video.videoHeight) return;
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      setWindowWidth(vw);
-
-      const videoAspect = video.videoWidth / video.videoHeight;
-      const viewportAspect = vw / vh;
-
-      let width: number;
-      let height: number;
-      let left: number;
-      let top: number;
-
-      if (viewportAspect > videoAspect) {
-        width = vw;
-        height = vw / videoAspect;
-        left = 0;
-        top = (vh - height) / 2;
-      } else {
-        height = vh;
-        width = vh * videoAspect;
-        top = 0;
-        left = (vw - width) / 2;
-      }
-
-      setVideoRect({ width, height, left, top });
-    };
-
-    tryPlay();
-
-    video.addEventListener("loadedmetadata", updateVideoRect);
-    window.addEventListener("resize", updateVideoRect);
-    updateVideoRect();
-
-    return () => {
-      video.removeEventListener("loadedmetadata", updateVideoRect);
-      window.removeEventListener("resize", updateVideoRect);
-    };
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  useEffect(() => {
+    setShowLoop(false);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const appear = appearVideoRef.current;
+    const loop = loopVideoRef.current;
+    if (!appear || !loop) return;
+
+    appear.load();
+    loop.load();
+
+    // Preload loop
+    loop
+      .play()
+      .then(() => {
+        loop.pause();
+        loop.currentTime = 0;
+      })
+      .catch(() => {});
+
+    // Start appear
+    appear.addEventListener("loadedmetadata", () => {
+      appear.currentTime = 0;
+      appear.play();
+    });
+
+    // When appear ends → CUT
+    appear.addEventListener("ended", () => {
+      appear.style.display = "none"; // cut
+      loop.currentTime = 0;
+      loop.style.display = "block"; // cut
+      loop.play();
+    });
+  }, [isMobile]);
+  useEffect(() => {
+    const updateVideoRect = () => {
+      setVideoRect({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        left: 0,
+        top: 0,
+      });
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Початкове оновлення
+    updateVideoRect();
+
+    // Оновлення при зміні розміру вікна
+    window.addEventListener("resize", updateVideoRect);
+
+    // Оновлення коли відео завантажиться
+    const video = appearVideoRef.current;
+    if (video) {
+      video.addEventListener("loadedmetadata", updateVideoRect);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateVideoRect);
+      if (video) {
+        video.removeEventListener("loadedmetadata", updateVideoRect);
+      }
+    };
+  }, [isMobile]);
   const step1OffsetX = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step1,
@@ -414,12 +459,39 @@ export function Sticks() {
     <div className="w-full h-screen bg-black relative overflow-hidden">
       <video
         ref={appearVideoRef}
-        className={`pointer-events-none fixed inset-0 w-full h-full object-cover `}
+        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
         autoPlay
         muted
         playsInline
+        style={{ display: "block" }}
       >
-        <source src="/video/mainBg.webm" type="video/mp4" />
+        <source
+          src={
+            isMobile
+              ? "/background/Appear For Mobile.webm"
+              : "/background/Appear For Pc.webm"
+          }
+          type="video/webm"
+        />
+      </video>
+
+      {/* Loop Video */}
+      <video
+        ref={loopVideoRef}
+        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
+        muted
+        playsInline
+        loop
+        style={{ display: "none" }}
+      >
+        <source
+          src={
+            isMobile
+              ? "/background/Loop For Mobile.webm"
+              : "/background/Loop For Pc.webm"
+          }
+          type="video/webm"
+        />
       </video>
 
       {videoRect.width > 0 && (
