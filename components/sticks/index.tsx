@@ -364,31 +364,68 @@ export function Sticks() {
     const loop = loopVideoRef.current;
     if (!appear || !loop) return;
 
+    // Функція для запуску відео
+    const startVideo = async () => {
+      try {
+        appear.currentTime = 0;
+        await appear.play();
+      } catch (error) {
+        console.log("Autoplay prevented:", error);
+      }
+    };
+
+    // Підготовка loop відео
+    const prepareLoop = async () => {
+      try {
+        await loop.play();
+        loop.pause();
+        loop.currentTime = 0;
+      } catch (error) {
+        console.log("Loop preparation failed:", error);
+      }
+    };
+
+    // Обробник завершення appear відео
+    const handleAppearEnded = async () => {
+      appear.style.display = "none";
+      loop.style.display = "block";
+      loop.currentTime = 0;
+      try {
+        await loop.play();
+      } catch (error) {
+        console.log("Loop play failed:", error);
+      }
+    };
+
     appear.load();
     loop.load();
 
-    // Preload loop
-    loop
-      .play()
-      .then(() => {
-        loop.pause();
-        loop.currentTime = 0;
-      })
-      .catch(() => {});
+    prepareLoop();
 
-    // Start appear
-    appear.addEventListener("loadedmetadata", () => {
-      appear.currentTime = 0;
-      appear.play();
-    });
+    // Спроба автозапуску
+    appear.addEventListener("loadedmetadata", startVideo);
+    appear.addEventListener("ended", handleAppearEnded);
 
-    // When appear ends → CUT
-    appear.addEventListener("ended", () => {
-      appear.style.display = "none"; // cut
-      loop.currentTime = 0;
-      loop.style.display = "block"; // cut
-      loop.play();
+    // Спроба запуску при будь-якій взаємодії користувача
+    const handleUserInteraction = () => {
+      if (appear.paused && appear.style.display !== "none") {
+        appear.play().catch(() => {});
+      }
+      document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("click", handleUserInteraction);
+    };
+
+    document.addEventListener("touchstart", handleUserInteraction, {
+      once: true,
     });
+    document.addEventListener("click", handleUserInteraction, { once: true });
+
+    return () => {
+      appear.removeEventListener("loadedmetadata", startVideo);
+      appear.removeEventListener("ended", handleAppearEnded);
+      document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("click", handleUserInteraction);
+    };
   }, [isMobile]);
   useEffect(() => {
     const updateVideoRect = () => {
