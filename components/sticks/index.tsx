@@ -364,7 +364,6 @@ export function Sticks() {
     const loop = loopVideoRef.current;
     if (!appear || !loop) return;
 
-    // Функція для запуску відео
     const startVideo = async () => {
       try {
         appear.currentTime = 0;
@@ -374,7 +373,6 @@ export function Sticks() {
       }
     };
 
-    // Підготовка loop відео
     const prepareLoop = async () => {
       try {
         await loop.play();
@@ -385,7 +383,6 @@ export function Sticks() {
       }
     };
 
-    // Обробник завершення appear відео
     const handleAppearEnded = async () => {
       appear.style.display = "none";
       loop.style.display = "block";
@@ -402,11 +399,9 @@ export function Sticks() {
 
     prepareLoop();
 
-    // Спроба автозапуску для всіх пристроїв
     appear.addEventListener("loadedmetadata", startVideo);
     appear.addEventListener("ended", handleAppearEnded);
 
-    // Додатковий запуск при взаємодії користувача (на випадок якщо браузер заблокував автозапуск)
     const handleUserInteraction = () => {
       if (appear.paused && appear.style.display !== "none") {
         appear.play().catch(() => {});
@@ -436,13 +431,10 @@ export function Sticks() {
       setWindowWidth(window.innerWidth);
     };
 
-    // Початкове оновлення
     updateVideoRect();
 
-    // Оновлення при зміні розміру вікна
     window.addEventListener("resize", updateVideoRect);
 
-    // Оновлення коли відео завантажиться
     const video = appearVideoRef.current;
     if (video) {
       video.addEventListener("loadedmetadata", updateVideoRect);
@@ -491,7 +483,7 @@ export function Sticks() {
   );
 
   return (
-    <div className="w-full h-screen bg-black relative overflow-hidden">
+    <div className="w-full h-screen  relative overflow-hidden">
       <video
         ref={appearVideoRef}
         className="pointer-events-none fixed inset-0 w-full h-full object-cover"
