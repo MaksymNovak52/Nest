@@ -1,5 +1,6 @@
 import { ENGINE_HYPE_STATS } from "@/constants";
 import Image from "next/image";
+import Link from "next/link";
 
 export function HeroHeader() {
   return (
@@ -26,9 +27,14 @@ export function HeroHeader() {
               fill="white"
             />
           </svg>
-          <h4 className="text-white leading-none font-semibold text-sm tracking-[-0.42px] font-[Host_Grotesk]">
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            href={"https://www.usenest.xyz/"}
+            className="text-white leading-none font-semibold text-sm tracking-[-0.42px] font-[Host_Grotesk]"
+          >
             nest Exchange
-          </h4>
+          </Link>
         </div>
       </div>
       <Image
@@ -39,7 +45,12 @@ export function HeroHeader() {
         className="z-10"
       />
       <div className="flex flex-col-reverse lg:flex-row gap-2  items-center max-lg:absolute bottom-[280px] z-10">
-        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer  transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0 rounded-full border-[#343635]">
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href={"https://discord.com/invite/7eAk78ZQXC"}
+          className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer  transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0 rounded-full border-[#343635]"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -52,8 +63,13 @@ export function HeroHeader() {
               fill="white"
             />
           </svg>
-        </span>
-        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10  hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]">
+        </Link>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href={"https://t.me/NestExchangeHL"}
+          className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10  hover:border-[#151B19] cursor-pointer transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0.5 rounded-full border-[#343635]"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="19"
@@ -66,8 +82,13 @@ export function HeroHeader() {
               fill="white"
             />
           </svg>
-        </span>
-        <span className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer  transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0 rounded-full border-[#343635]">
+        </Link>
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          href={"https://x.com/TheHypeEngine"}
+          className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer  transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0 rounded-full border-[#343635]"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="19"
@@ -80,7 +101,7 @@ export function HeroHeader() {
               fill="white"
             />
           </svg>{" "}
-        </span>
+        </Link>
       </div>
 
       <div className="flex flex-col items-start gap-3  absolute lg:hidden top-[88px] left-[20px] z-10">

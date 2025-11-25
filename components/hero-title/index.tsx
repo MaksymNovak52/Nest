@@ -12,15 +12,15 @@ export function HeroTitle() {
         leading-[112%] 
         tracking-[-1.729px]
         absolute
-        bottom-[189px]
-        w-[869px]
+        bottom-[89px]
+        w-[1109px]
         left-1/2
         translate-x-[-50%]
         hidden lg:inline-block
         z-10
         "
       >
-        Amplify HYPE's upside
+        Compound your conviction Get HYPE multiplied
       </h1>
       <span className="absolute bottom-[228px]  lg:block hidden w-full h-[1px] left-1 z-9 text-end pr-6 uppercase leading-[12px] text-[12px] font-medium tracking-[0.36px] mb-3">
         +
@@ -38,7 +38,7 @@ export function HeroTitle() {
         leading-[96%]
         tracking-[-0.981px]
         absolute
-        bottom-[199px]
+        bottom-[160px]
         w-[335px]
         left-1/2
         -translate-x-1/2
@@ -47,8 +47,7 @@ export function HeroTitle() {
         z-10
         "
       >
-        Amplify
-        <br /> HYPE's upside
+        Compound your conviction Get HYPE multiplied
       </h1>
     </>
   );
