@@ -61,6 +61,8 @@ export function Sticks() {
           muted
           autoplay
           playsinline
+          playsInline
+          autoPlay
           preload="metadata"
         >
         <source src="${mainVideo}" type="video/mp4" />
