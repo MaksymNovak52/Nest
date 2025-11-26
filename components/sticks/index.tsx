@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-// Компонент Stick залишається без змін
 type StickVariant = "left" | "rightTop" | "rightBottom";
+
 type StickProps = {
   label: string;
   description: string;
@@ -24,6 +24,7 @@ function Stick({
 }: StickProps) {
   const isRightTop = variant === "rightTop";
   const isRightBottom = variant === "rightBottom";
+
   const direction = isRightBottom ? "flex-col-reverse" : "flex-col";
   const align = isRightTop || isRightBottom ? "items-start " : "items-start";
   const gap = isRightTop || isRightBottom ? "gap-2" : "";
@@ -33,6 +34,7 @@ function Stick({
     const timer = setTimeout(() => {
       setIsHovered(true);
     }, delay);
+
     return () => clearTimeout(timer);
   }, [delay]);
 
@@ -59,6 +61,7 @@ function Stick({
               <path d="M0 0.5L138.526 0.5L187 68.5" stroke="white" />
             </g>
           </svg>
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64"
@@ -81,6 +84,7 @@ function Stick({
         </div>
       );
     }
+
     if (variant === "rightTop") {
       return (
         <div>
@@ -103,6 +107,7 @@ function Stick({
               <path d="M225 0.5L63.4331 0.5L4 83.5" stroke="white" />
             </g>
           </svg>
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="61"
@@ -125,6 +130,7 @@ function Stick({
         </div>
       );
     }
+
     return (
       <div>
         <svg
@@ -171,7 +177,7 @@ function Stick({
 
   return (
     <div
-      className={`absolute group transition-opacity duration-300 ${
+      className={`absolute group transition-opacity duration-300  ${
         isHovered ? "opacity-100" : "opacity-0"
       } z-20 flex ${direction} ${align} ${gap}`}
       style={{
@@ -185,7 +191,7 @@ function Stick({
       <div
         className={`relative inline-block transition-transform duration-300 ${
           variant !== "left" && " ml-7 lg:ml-16"
-        } ${hover}`}
+        }  ${hover}`}
       >
         <h4 className="text-white font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase">
           {label}
@@ -199,8 +205,8 @@ function Stick({
   );
 }
 
-// Конфігурація та функція для респонсивності залишаються без змін
 type Rect = { width: number; height: number; left: number; top: number };
+
 type ResponsiveConfig = {
   minWidth: number;
   maxWidth: number;
@@ -215,6 +221,7 @@ type ResponsiveConfig = {
   yM?: number;
   invertY?: boolean;
 };
+
 const STICK_RESPONSIVE_CONFIG: Record<
   "step1" | "step2" | "step3",
   ResponsiveConfig
@@ -281,33 +288,51 @@ function getResponsiveValue(
     xM,
     yM,
   } = config;
+
   if (windowWidth <= 500 && xM) {
-    if (axis === "x") return xM;
+    if (axis === "x") {
+      return xM;
+    }
     return yM ? yM : maxY;
   }
   if (windowWidth >= 2060 && xB) {
-    if (axis === "x") return xB;
+    if (axis === "x") {
+      return xB;
+    }
     return yB ? yB : maxY;
   }
+
   if (!windowWidth) {
     if (axis === "x") return invertX ? minX : maxX;
     return invertY ? minY : maxY;
   }
+
   const isX = axis === "x";
   const min = isX ? minX : minY;
   const max = isX ? maxX : maxY;
   const invert = isX ? invertX : invertY;
-  if (windowWidth <= minWidth) return invert ? min : max;
-  if (windowWidth >= maxWidth) return invert ? max : min;
+
+  if (windowWidth <= minWidth) {
+    return invert ? min : max;
+  }
+
+  if (windowWidth >= maxWidth) {
+    return invert ? max : min;
+  }
+
   const t = (windowWidth - minWidth) / (maxWidth - minWidth);
-  if (invert) return min + (max - min) * t;
+
+  if (invert) {
+    return min + (max - min) * t;
+  }
+
   return max + (min - max) * t;
 }
 
-// Оновлений компонент Sticks
 export function Sticks() {
   const appearVideoRef = useRef<HTMLVideoElement>(null);
   const loopVideoRef = useRef<HTMLVideoElement>(null);
+
   const [videoRect, setVideoRect] = useState<Rect>({
     width: 0,
     height: 0,
@@ -315,20 +340,121 @@ export function Sticks() {
     top: 0,
   });
   const [windowWidth, setWindowWidth] = useState(0);
+  const [showLoop, setShowLoop] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
     };
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
+
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Цей useEffect відповідає за оновлення розмірів для позиціонування "паличок"
   useEffect(() => {
-    const updateRect = () => {
+    setShowLoop(false);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const appear = appearVideoRef.current;
+    const loop = loopVideoRef.current;
+    if (!appear || !loop) return;
+
+    let hasInteracted = false;
+
+    const startVideo = async () => {
+      try {
+        appear.currentTime = 0;
+        const playPromise = appear.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+      } catch (error) {
+        console.log("Autoplay prevented:", error);
+      }
+    };
+
+    const prepareLoop = async () => {
+      try {
+        loop.load();
+        const playPromise = loop.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          loop.pause();
+        }
+        loop.currentTime = 0;
+      } catch (error) {
+        console.log("Loop preparation failed:", error);
+      }
+    };
+
+    const handleAppearEnded = async () => {
+      appear.style.display = "none";
+      loop.style.display = "block";
+      loop.currentTime = 0;
+      try {
+        const playPromise = loop.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+      } catch (error) {
+        console.log("Loop play failed:", error);
+      }
+    };
+
+    const handleUserInteraction = async () => {
+      if (hasInteracted) return;
+      hasInteracted = true;
+
+      if (appear.paused && appear.style.display !== "none") {
+        try {
+          const playPromise = appear.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+          }
+        } catch (error) {
+          console.log("Play failed:", error);
+        }
+      }
+    };
+
+    appear.load();
+    loop.load();
+
+    // Delay to ensure video is loaded
+    setTimeout(() => {
+      prepareLoop();
+      startVideo();
+    }, 100);
+
+    appear.addEventListener("loadedmetadata", startVideo);
+    appear.addEventListener("ended", handleAppearEnded);
+
+    document.addEventListener("touchstart", handleUserInteraction);
+    document.addEventListener("touchend", handleUserInteraction);
+    document.addEventListener("click", handleUserInteraction);
+
+    return () => {
+      appear.removeEventListener("loadedmetadata", startVideo);
+      appear.removeEventListener("ended", handleAppearEnded);
+      document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("touchend", handleUserInteraction);
+      document.removeEventListener("click", handleUserInteraction);
+    };
+  }, [isMobile]);
+  useEffect(() => {
+    const appear = appearVideoRef.current;
+    if (!appear) return;
+    const tryPlay = () => {
+      appear.play().catch(() => {});
+    };
+
+    tryPlay();
+    const updateVideoRect = () => {
       setVideoRect({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -337,26 +463,36 @@ export function Sticks() {
       });
       setWindowWidth(window.innerWidth);
     };
-    updateRect();
-    window.addEventListener("resize", updateRect);
-    return () => window.removeEventListener("resize", updateRect);
-  }, []);
 
-  // Обробник завершення першого відео
-  const handleAppearEnded = () => {
-    if (appearVideoRef.current && loopVideoRef.current) {
-      appearVideoRef.current.style.display = "none";
-      loopVideoRef.current.style.display = "block";
-      loopVideoRef.current
-        .play()
-        .catch((error) => console.log("Loop video play failed:", error));
+    updateVideoRect();
+
+    window.addEventListener("resize", updateVideoRect);
+
+    const video = appearVideoRef.current;
+    if (video) {
+      video.addEventListener("loadedmetadata", updateVideoRect);
     }
-  };
 
-  const step1X =
-    50 - getResponsiveValue(windowWidth, STICK_RESPONSIVE_CONFIG.step1, "x");
-  const step1Y =
-    50 - getResponsiveValue(windowWidth, STICK_RESPONSIVE_CONFIG.step1, "y");
+    return () => {
+      window.removeEventListener("resize", updateVideoRect);
+      if (video) {
+        video.removeEventListener("loadedmetadata", updateVideoRect);
+      }
+    };
+  }, [isMobile]);
+  const step1OffsetX = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step1,
+    "x"
+  );
+  const step1OffsetY = getResponsiveValue(
+    windowWidth,
+    STICK_RESPONSIVE_CONFIG.step1,
+    "y"
+  );
+  const step1X = 50 - step1OffsetX;
+  const step1Y = 50 - step1OffsetY;
+
   const step2X = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step2,
@@ -367,6 +503,7 @@ export function Sticks() {
     STICK_RESPONSIVE_CONFIG.step2,
     "y"
   );
+
   const step3X = getResponsiveValue(
     windowWidth,
     STICK_RESPONSIVE_CONFIG.step3,
@@ -378,41 +515,85 @@ export function Sticks() {
     "y"
   );
 
-  const appearSrc = isMobile
-    ? "/background/Appear For Mobile.webm"
-    : "/background/Appear For Pc.webm";
-  const loopSrc = isMobile
-    ? "/background/Loop For Mobile.webm"
-    : "/background/Loop For Pc.webm";
+  const isSafari = () => {
+    const ua = navigator.userAgent.toLowerCase();
+    return ua.indexOf("safari") > -1 && ua.indexOf("chrome") < 0;
+  };
+  useEffect(() => {
+    // check if user agent is safari and we have the ref to the container <div />
+    if (isSafari() && appearVideoRef.current) {
+      // obtain reference to the video element
+      const player = appearVideoRef.current.children[0];
 
+      // if the reference to video player has been obtained
+      if (player) {
+        // set the video attributes using javascript as per the
+        // webkit Policy
+        player.controls = false;
+        player.playsinline = true;
+        player.muted = true;
+        player.setAttribute("muted", ""); // leave no stones unturned :)
+        player.autoplay = true;
+
+        // Let's wait for an event loop tick and be async.
+        setTimeout(() => {
+          // player.play() might return a promise but it's not guaranteed crossbrowser.
+          const promise = player.play();
+          // let's play safe to ensure that if we do have a promise
+          if (promise.then) {
+            promise
+              .then(() => {})
+              .catch(() => {
+                // if promise fails, hide the video and fallback to <img> tag
+                appearVideoRef.current.style.display = "none";
+              });
+          }
+        }, 0);
+      }
+    }
+  }, []);
   return (
-    <div className="w-full h-screen relative overflow-hidden">
-      {/* Відео-фон */}
-      <video
-        ref={appearVideoRef}
-        key={appearSrc} // key змушує React перезавантажити відео при зміні isMobile
-        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
-        autoPlay
-        muted
-        playsInline
-        onEnded={handleAppearEnded}
-        style={{ display: "block" }}
-      >
-        <source src={appearSrc} type="video/webm" />
-      </video>
-      <video
-        ref={loopVideoRef}
-        key={loopSrc}
-        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
-        loop
-        muted
-        playsInline
-        style={{ display: "none" }}
-      >
-        <source src={loopSrc} type="video/webm" />
-      </video>
+    <div className="w-full h-screen  relative overflow-hidden">
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `
+    <video
+      class="pointer-events-none fixed inset-0 w-full h-full object-cover"
+              loop
+          muted
+          autoplay
+          playsinline
+          preload="metadata"
+      id="appearVideo"
+      style="display: block;"
+    >
+      <source src="${
+        isMobile
+          ? "/background/Appear For Mobile.webm"
+          : "/background/Appear For Pc.webm"
+      }" type="video/webm" />
+    </video>
 
-      {/* Контейнер для "паличок" */}
+    <video
+      class="pointer-events-none fixed inset-0 w-full h-full object-cover"
+               loop
+          muted
+          autoplay
+          playsinline
+          preload="metadata"
+      id="loopVideo"
+      style="display: none;"
+    >
+      <source src="${
+        isMobile
+          ? "/background/Loop For Mobile.webm"
+          : "/background/Loop For Pc.webm"
+      }" type="video/webm" />
+    </video>
+    `,
+        }}
+      />
+
       {videoRect.width > 0 && (
         <div
           className="fixed"
