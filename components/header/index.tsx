@@ -43,7 +43,7 @@ export function HeroHeader() {
         height={32}
         className="z-10"
       />
-      <div className="flex flex-col-reverse lg:flex-row gap-2  items-center max-lg:absolute bottom-[280px] z-10">
+      <div className="flex flex-col-reverse lg:flex-row gap-2  items-center max-lg:absolute bottom-[220px] z-10">
         <Link
           target="_blank"
           rel="noopener noreferrer"
@@ -102,13 +102,13 @@ export function HeroHeader() {
           </svg>{" "}
         </Link>
       </div>
-      <div className="font-medium  px-2 text-[12px] text-[#6F7371] uppercase tracking-[0.30px] leading-[14px] flex lg:hidden flex-row justify-start absolute top-[88px] left-[12px] z-10 items-start text-start  flex-wrap">
-        <span className="">
+      <div className="font-medium w-[270px]  px-2 text-[12px] text-[#6F7371] uppercase tracking-[0.30px] leading-[14px] flex lg:hidden flex-row justify-start absolute top-[88px] left-[12px] z-10 items-start text-start  flex-wrap">
+        <span className="font-medium text-[12px] text-[#6F7371] uppercase">
           <span className="text-[#FFFFFF]">Like Strategy₿ onchain.</span>{" "}
-          Perpetual accumulation{" "}
+          Perpetual accumulation compounding $HYPE into $MEGAHYPE
         </span>
-        <span className=" ">compounding $HYPE into $MEGAHYPE</span>
       </div>
+
       {/* <div className="flex flex-col items-start gap-3  absolute lg:hidden top-[88px] left-[20px] z-10">
         {ENGINE_HYPE_STATS.map((item) => (
           <div className="flex flex-row items-center gap-2" key={item.title}>

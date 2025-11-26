@@ -499,7 +499,6 @@ export function Sticks() {
         />
       </video>
 
-      {/* Loop Video */}
       <video
         ref={loopVideoRef}
         className="pointer-events-none fixed inset-0 w-full h-full object-cover"

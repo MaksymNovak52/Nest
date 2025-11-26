@@ -27,7 +27,7 @@ export function HeroTitle() {
       </span>
       <div className="absolute bottom-[228px]  lg:block hidden w-full bg-[#2A3531] h-[1px] left-1 z-9"></div>
 
-      <span className="absolute bottom-[262px]  block lg:hidden w-full bg-[#2A3531] h-[1px] left-1 z-10 "></span>
+      <span className="absolute bottom-[202px]  block lg:hidden w-full bg-[#2A3531] h-[1px] left-1 z-10 "></span>
       <h1
         className="
         text-white 
@@ -38,7 +38,7 @@ export function HeroTitle() {
         leading-[96%]
         tracking-[-0.981px]
         absolute
-        bottom-[160px]
+        bottom-[100px]
         w-[335px]
         left-[190px]
         -translate-x-1/2
