@@ -499,7 +499,7 @@ export function Sticks() {
             //   : "/background/Appear For Pc.webm"
             "/video/appear.mp4"
           }
-          type="video/webm"
+          type="video/mp4"
         />
       </video>
 
@@ -519,7 +519,7 @@ export function Sticks() {
             //   ? "/background/Loop For Mobile.webm"
             //   : "/background/Loop For Pc.webm"
           }
-          type="video/webm"
+          type="video/mp4"
         />
       </video>
 
