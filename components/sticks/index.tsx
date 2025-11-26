@@ -421,6 +421,13 @@ export function Sticks() {
     };
   }, [isMobile]);
   useEffect(() => {
+    const appear = appearVideoRef.current;
+    if (!appear) return;
+    const tryPlay = () => {
+      appear.play().catch(() => {});
+    };
+
+    tryPlay();
     const updateVideoRect = () => {
       setVideoRect({
         width: window.innerWidth,
