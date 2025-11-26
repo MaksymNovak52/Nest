@@ -492,7 +492,14 @@ export function Sticks() {
         playsInline
         style={{ display: "block" }}
       >
-        <source src={"/video/appear.mp4"} type="video/mp4" />
+        <source
+          src={
+            isMobile
+              ? "/video/AppearForMobile.mp4"
+              : "/background/Appear For Pc.webm"
+          }
+          type="video/mp4"
+        />
       </video>
 
       <video
@@ -503,7 +510,14 @@ export function Sticks() {
         loop
         style={{ display: "none" }}
       >
-        <source src={"/video/loop.mp4"} type="video/mp4" />
+        <source
+          type="video/mp4"
+          src={
+            isMobile
+              ? "/video/LoopForMobile.mp4"
+              : "/background/Loop For Pc.webm"
+          }
+        />
       </video>
 
       {videoRect.width > 0 && (
