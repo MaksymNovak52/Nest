@@ -237,7 +237,7 @@ const STICK_RESPONSIVE_CONFIG: Record<
     xB: 16,
     yB: 10.4,
     xM: 34,
-    yM: 6,
+    yM: 7,
   },
   step2: {
     minWidth: 600,
