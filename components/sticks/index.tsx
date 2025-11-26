@@ -264,7 +264,7 @@ const STICK_RESPONSIVE_CONFIG: Record<
     invertY: true,
     xB: 70,
     yB: 52,
-    xM: 80,
+    xM: 75,
     yM: 50,
   },
 };
