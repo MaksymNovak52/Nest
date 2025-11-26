@@ -15,8 +15,7 @@ export function HeroFooter() {
       font-medium
       leading-[100%]
       tracking-[0.36px]
-      uppercase
-  "
+      uppercase"
       >
         <span> + </span>
         <span> +</span>
