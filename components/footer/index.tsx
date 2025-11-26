@@ -9,7 +9,7 @@ export function HeroFooter() {
         <span className=" ">compounding $HYPE into $MEGAHYPE</span>
       </div> */}
       <div
-        className="relative left-[11px]   flex  gap-4 bottom-[100px]    text-white
+        className="relative left-[11px] hidden lg:flex    gap-4 bottom-[100px]    text-white
   font-host-grotesk
   text-[12px]
   font-medium

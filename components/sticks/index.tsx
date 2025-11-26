@@ -364,10 +364,15 @@ export function Sticks() {
     const loop = loopVideoRef.current;
     if (!appear || !loop) return;
 
+    let hasInteracted = false;
+
     const startVideo = async () => {
       try {
         appear.currentTime = 0;
-        await appear.play();
+        const playPromise = appear.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
       } catch (error) {
         console.log("Autoplay prevented:", error);
       }
@@ -375,8 +380,12 @@ export function Sticks() {
 
     const prepareLoop = async () => {
       try {
-        await loop.play();
-        loop.pause();
+        loop.load();
+        const playPromise = loop.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+          loop.pause();
+        }
         loop.currentTime = 0;
       } catch (error) {
         console.log("Loop preparation failed:", error);
@@ -388,35 +397,52 @@ export function Sticks() {
       loop.style.display = "block";
       loop.currentTime = 0;
       try {
-        await loop.play();
+        const playPromise = loop.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
       } catch (error) {
         console.log("Loop play failed:", error);
+      }
+    };
+
+    const handleUserInteraction = async () => {
+      if (hasInteracted) return;
+      hasInteracted = true;
+
+      if (appear.paused && appear.style.display !== "none") {
+        try {
+          const playPromise = appear.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+          }
+        } catch (error) {
+          console.log("Play failed:", error);
+        }
       }
     };
 
     appear.load();
     loop.load();
 
-    prepareLoop();
+    // Delay to ensure video is loaded
+    setTimeout(() => {
+      prepareLoop();
+      startVideo();
+    }, 100);
 
     appear.addEventListener("loadedmetadata", startVideo);
     appear.addEventListener("ended", handleAppearEnded);
 
-    const handleUserInteraction = () => {
-      if (appear.paused && appear.style.display !== "none") {
-        appear.play().catch(() => {});
-      }
-    };
-
-    document.addEventListener("touchstart", handleUserInteraction, {
-      once: true,
-    });
-    document.addEventListener("click", handleUserInteraction, { once: true });
+    document.addEventListener("touchstart", handleUserInteraction);
+    document.addEventListener("touchend", handleUserInteraction);
+    document.addEventListener("click", handleUserInteraction);
 
     return () => {
       appear.removeEventListener("loadedmetadata", startVideo);
       appear.removeEventListener("ended", handleAppearEnded);
       document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("touchend", handleUserInteraction);
       document.removeEventListener("click", handleUserInteraction);
     };
   }, [isMobile]);
