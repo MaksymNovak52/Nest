@@ -494,9 +494,7 @@ export function Sticks() {
       >
         <source
           src={
-            isMobile
-              ? "/video/AppearForMobile.mp4"
-              : "/background/Appear For Pc.webm"
+            isMobile ? "/video/appear.mp4" : "/background/Appear For Pc.webm"
           }
           type="video/mp4"
         />
@@ -512,11 +510,7 @@ export function Sticks() {
       >
         <source
           type="video/mp4"
-          src={
-            isMobile
-              ? "/video/LoopForMobile.mp4"
-              : "/background/Loop For Pc.webm"
-          }
+          src={isMobile ? "/video/appear.mp4" : "/background/Loop For Pc.webm"}
         />
       </video>
 
