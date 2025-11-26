@@ -40,7 +40,7 @@ export function HeroTitle() {
         absolute
         bottom-[160px]
         w-[335px]
-        left-1/2
+        left-[190px]
         -translate-x-1/2
         inline-block
         lg:hidden
