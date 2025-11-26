@@ -10,12 +10,12 @@ export function HeroFooter() {
       </div> */}
       <div
         className="relative left-[11px] hidden lg:flex    gap-4 bottom-[100px]    text-white
-  font-host-grotesk
-  text-[12px]
-  font-medium
-  leading-[100%]
-  tracking-[0.36px]
-  uppercase
+      font-host-grotesk
+      text-[12px]
+      font-medium
+      leading-[100%]
+      tracking-[0.36px]
+      uppercase
   "
       >
         <span> + </span>
