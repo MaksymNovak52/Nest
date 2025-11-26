@@ -10,7 +10,7 @@ const mainVideo =
   "https://fmkqvzrivtsgbgawssdf.supabase.co/storage/v1/object/public/nest/Appear%20For%20Pc.webm";
 
 export function Sticks() {
-  const videoParentRef = useRef(null);
+  const videoParentRef = useRef<any>(null);
   const [shouldUseImage, setShouldUseImage] = useState(false);
   useEffect(() => {
     // check if user agent is safari and we have the ref to the container <div />
