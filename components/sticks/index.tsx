@@ -54,20 +54,15 @@ export function Sticks() {
       ref={videoParentRef}
       className="
       bg-black"
-      dangerouslySetInnerHTML={{
-        __html: `
-        <video
-          loop
-          muted
-          autoplay
-          playsinline
-          playsInline
-          autoPlay
-          preload="metadata"
-        >
-        <source src="${mainVideo}" type="video/mp4" />
-        </video>`,
-      }}
-    />
+    >
+      <video
+        className="landing-video"
+        src={mainVideo}
+        loop={true}
+        muted={true}
+        autoPlay={true}
+        playsInline={true}
+      />
+    </div>
   );
 }
