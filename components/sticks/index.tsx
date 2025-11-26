@@ -517,42 +517,41 @@ export function Sticks() {
 
   return (
     <div className="w-full h-screen  relative overflow-hidden">
-      <video
-        ref={appearVideoRef}
-        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
-        autoPlay
-        muted
-        playsInline
-        style={{ display: "block" }}
-      >
-        <source
-          src={
-            isMobile
-              ? "/background/Appear For Mobile.webm"
-              : "/background/Appear For Pc.webm"
-          }
-          type="video/webm"
-        />
-      </video>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `
+    <video
+      class="pointer-events-none fixed inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      playsinline
+      id="appearVideo"
+      style="display: block;"
+    >
+      <source src="${
+        isMobile
+          ? "/background/Appear For Mobile.webm"
+          : "/background/Appear For Pc.webm"
+      }" type="video/webm" />
+    </video>
 
-      {/* Loop Video */}
-      <video
-        ref={loopVideoRef}
-        className="pointer-events-none fixed inset-0 w-full h-full object-cover"
-        muted
-        playsInline
-        loop
-        style={{ display: "none" }}
-      >
-        <source
-          src={
-            isMobile
-              ? "/background/Loop For Mobile.webm"
-              : "/background/Loop For Pc.webm"
-          }
-          type="video/webm"
-        />
-      </video>
+    <video
+      class="pointer-events-none fixed inset-0 w-full h-full object-cover"
+      muted
+      playsinline
+      loop
+      id="loopVideo"
+      style="display: none;"
+    >
+      <source src="${
+        isMobile
+          ? "/background/Loop For Mobile.webm"
+          : "/background/Loop For Pc.webm"
+      }" type="video/webm" />
+    </video>
+    `,
+        }}
+      />
 
       {videoRect.width > 0 && (
         <div
