@@ -21,7 +21,7 @@ export function GetButton() {
           text-[16px] font-semibold leading-[100%] tracking-[-0.48px]
           px-[16px] lg:px-6 bottom-[8px] right-1/2 max-lg:translate-x-1/2 lg:right-[10px]
           w-[97%] lg:w-[704px] h-[48px]
-          flex flex-row justify-between items-center bg-[#9CE0DA]
+          flex flex-row justify-between items-center bg-[#9CE0DA] 
         "
       >
         <div className="relative w-full h-full">

@@ -47,7 +47,7 @@ export function HeroHeader() {
         <Link
           target="_blank"
           rel="noopener noreferrer"
-          href={"https://discord.com/invite/7eAk78ZQXC"}
+          href={"https://discord.gg/hypeengine"}
           className="border active:bg-transparent active:border-[#15231F] hover:bg-white/10 hover:border-[#151B19] cursor-pointer  transition-colors w-10 h-10 bg-transparent flex items-center justify-center pr-0 rounded-full border-[#343635]"
         >
           <svg
