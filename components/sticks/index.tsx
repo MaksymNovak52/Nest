@@ -196,7 +196,7 @@ function Stick({
         <h4 className="text-white font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase">
           {label}
         </h4>
-        <p className="absolute left-0 top-full mt-[2px] w-[100px] lg:w-[180px] text-white/80 font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase opacity-0 pointer-events-none transition-opacity duration-300 lg:group-hover:opacity-70 max-lg:group-focus:opacity-70">
+        <p className="absolute left-0 top-full mt-[2px] w-[100px] lg:w-[140px] text-white/80 font-['Host_Grotesk'] text-[12px] font-medium leading-[100%] tracking-[0.36px] uppercase opacity-0 pointer-events-none transition-opacity duration-300 lg:group-hover:opacity-70 max-lg:group-focus:opacity-70">
           {description}
         </p>
       </div>
@@ -533,16 +533,16 @@ export function Sticks() {
           <div className="relative w-full h-full">
             <Stick
               label="Step 1"
-              description="nest exchange fees fuel perpetual HYPE accumulation"
+              description="nest fees fuel the Engine"
               videoX={step1X}
               videoY={step1Y}
               variant="left"
-              hover="lg:group-hover:-translate-y-10 max-lg:group-focus:-translate-y-16"
+              hover="lg:group-hover:-translate-y-6 max-lg:group-focus:-translate-y-6"
               delay={500}
             />
             <Stick
               label="Step 2"
-              description="HYPE becomes MEGAHYPE, compounding exposure"
+              description="HYPE becomes leveraged MEGAHYPE"
               videoX={step2X}
               videoY={step2Y}
               variant="rightTop"
@@ -551,7 +551,7 @@ export function Sticks() {
             />
             <Stick
               label="Step 3"
-              description="MEGAHYPE rewards flow back to voters, powering the flywheel"
+              description="Max HYPE's upside with Vaults"
               videoX={step3X}
               videoY={step3Y}
               variant="rightBottom"
