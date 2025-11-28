@@ -8,7 +8,7 @@ const geistSans = Host_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HYPE Engine",
+  title: "Amplify HYPE’s upside",
   description: "Amplify HYPE's upside",
   icons: {
     icon: [
